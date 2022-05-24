@@ -21,11 +21,18 @@ struct LandmarkRow: View {
             Text(landmark.name)
             
             Spacer()
+            
+            if landmark.isFavorite {
+                Image(systemName: "star.fill")
+                    .foregroundColor(.yellow)
+            }
         }
     }
 }
 
 struct LandmarkRow_Previews: PreviewProvider {
+    static var landmarks = ModelData().landmarks
+    
     static var previews: some View {
         // 'LandmarkRow_Previews'의 미리보기 정적 속성에서 'LandmarkRow' 초기화자에 'Landmark' 매개 변수를 추가하여 'Landmark' 배열의 첫 번째 요소를 지정합니다.
         Group {

@@ -21,6 +21,7 @@ struct Landmark: Hashable, Codable, Identifiable {
     var park: String
     var state: String
     var description: String
+    var isFavorite: Bool
     
     // Landmarks 구조의 사용자는 이미지 자체에만 관심을 가지기 때문에 속성을 비공개로 설정합니다.
     private var imageName: String
