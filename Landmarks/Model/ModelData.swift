@@ -16,6 +16,19 @@ final class ModelData: ObservableObject {
     @Published var landmarks: [Landmark] = load("landmarkData.json")
     // 처음에 하이킹 데이터를 로드한 후에는 절대 하이킹 데이터를 수정할 수 없으므로 @Published 속성으로 표시할 필요가 없습니다.
     var hikes: [Hike] = load("hikeData.json")
+    
+    // features가 true로 설정된 랜드마크만 포함하는 새 계산 형상 배열을 추가합니다.
+    var features: [Landmark] {
+        landmarks.filter { $0.isFeatured }
+    }
+    
+    // 범주 이름을 키로 하는 계산된 범주 사전과 각 키에 대한 관련 랜드마크 배열을 추가합니다.
+    var categories: [String: [Landmark]] {
+        Dictionary(
+            grouping: landmarks,
+            by: { $0.category.rawValue }
+        )
+    }
 }
 
 // 앱의 기본 번들에서 지정된 이름의 JSON 데이터를 가져오는 load(_:) 메서드를 만듭니다.

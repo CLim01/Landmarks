@@ -22,7 +22,17 @@ struct Landmark: Hashable, Codable, Identifiable {
     var state: String
     var description: String
     var isFavorite: Bool
+    var isFeatured: Bool
     
+    // 범주 열거와 범주 속성을 랜드마크 구조에 추가합니다.
+    var category: Category
+    // landmarkData.json 파일에는 이미 세 개의 문자열 값 중 하나를 가진 각 랜드마크에 대한 범주 값이 포함되어 있습니다.
+    // 데이터 파일의 이름을 일치시키면 구조의 코드화 가능 적합성에 의존하여 데이터를 로드할 수 있습니다.
+    enum Category: String, CaseIterable, Codable {
+        case lakes = "Lakes"
+        case rivers = "Rivers"
+        case mountains = "Mountains"
+    }
     // Landmarks 구조의 사용자는 이미지 자체에만 관심을 가지기 때문에 속성을 비공개로 설정합니다.
     private var imageName: String
     var image: Image {
