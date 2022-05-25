@@ -16,6 +16,8 @@ final class ModelData: ObservableObject {
     @Published var landmarks: [Landmark] = load("landmarkData.json")
     // 처음에 하이킹 데이터를 로드한 후에는 절대 하이킹 데이터를 수정할 수 없으므로 @Published 속성으로 표시할 필요가 없습니다.
     var hikes: [Hike] = load("hikeData.json")
+    // 사용자가 프로필 보기를 해제한 후에도 지속되는 사용자 프로필의 인스턴스를 포함하도록 ModelData 클래스를 업데이트합니다.
+    @Published var profile = Profile.default
     
     // features가 true로 설정된 랜드마크만 포함하는 새 계산 형상 배열을 추가합니다.
     var features: [Landmark] {
