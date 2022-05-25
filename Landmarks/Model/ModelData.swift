@@ -14,6 +14,8 @@ final class ModelData: ObservableObject {
     // landmarkData.json에서 초기화하는 landmarks 배열을 만듭니다.
     // ObservableObject는 subscribers가 변경 내용을 선택할 수 있도록 데이터에 대한 변경 내용을 게시해야 합니다.
     @Published var landmarks: [Landmark] = load("landmarkData.json")
+    // 처음에 하이킹 데이터를 로드한 후에는 절대 하이킹 데이터를 수정할 수 없으므로 @Published 속성으로 표시할 필요가 없습니다.
+    var hikes: [Hike] = load("hikeData.json")
 }
 
 // 앱의 기본 번들에서 지정된 이름의 JSON 데이터를 가져오는 load(_:) 메서드를 만듭니다.

@@ -1,0 +1,32 @@
+//
+//  Hike.swift
+//  Landmarks
+//
+//  Created by 임성빈 on 2022/05/25.
+//
+
+import Foundation
+
+// 랜드마크 구조와 마찬가지로 Hike 구조는 Codable을 준수하며 해당 데이터 파일의 키와 일치하는 속성을 가집니다.
+struct Hike: Codable, Hashable, Identifiable {
+    var id: Int
+    var name: String
+    var distance: Double
+    var difficulty: Int
+    var observations: [Observation]
+    
+    static var formatter = LengthFormatter()
+    
+    var distanceText: String {
+        Hike.formatter
+            .string(fromValue: distance, unit: .kilometer)
+    }
+    
+    struct Observation: Codable, Hashable {
+        var distanceFromStart: Double
+        
+        var elevation: Range<Double>
+        var pace: Range<Double>
+        var heartRate: Range<Double>
+    }
+}
