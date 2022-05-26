@@ -39,6 +39,10 @@ struct Landmark: Hashable, Codable, Identifiable {
         Image(imageName)
     }
     
+    var featureImage: Image? {
+        isFeatured ? Image(imageName + "_feature") : nil
+    }
+    
     // JSON 데이터 구조의 저장소를 반영하는 중첩 좌표 유형을 사용하여 구조에 좌표 특성을 추가합니다.
     // 이 속성은 다음 단계에서 공용 계산 속성을 만드는 데만 사용되므로 개인 속성으로 표시합니다.
     private var coordinates: Coordinates
