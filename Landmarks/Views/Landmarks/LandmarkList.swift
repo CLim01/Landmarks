@@ -12,11 +12,26 @@ struct LandmarkList: View {
     @EnvironmentObject var modelData: ModelData
     // 상태 속성을 사용하여 보기 및 하위 보기에 대한 정보를 보관하기 때문에 항상 상태를 비공개로 만듭니다.
     @State private var showFavoritesOnly: Bool = false
+    @State private var filter = FilterCategory.all
     
     var filteredLandmarks: [Landmark] {
         modelData.landmarks.filter { landmark in
-            (!showFavoritesOnly || landmark.isFavorite)
+            (!showFavoritesOnly || landmark.isFavorite) && (filter == .all || filter.rawValue == landmark.category.rawValue)
         }
+    }
+    
+    enum FilterCategory: String, CaseIterable, Identifiable {
+        case all = "All"
+        case lakes = "Lakes"
+        case rivers = "Rivers"
+        case mountains = "Mountains"
+        
+        var id: FilterCategory { self }
+    }
+    
+    var title: String {
+        let title = filter == .all ? "Landmarks" : filter.rawValue
+        return showFavoritesOnly ? "Favorite \(title)" : title
     }
     
     var body: some View {
@@ -25,9 +40,6 @@ struct LandmarkList: View {
             // List는 식별 가능한 데이터(identifiable data)로 작동합니다.
             // 데이터와 함께 각 요소를 고유하게 식별하는 속성의 키 경로를 전달하거나 데이터 유형이 식별 가능 프로토콜에 적합하도록 하는 두 가지 방법 중 하나를 통해 데이터를 식별할 수 있습니다.
             List {
-                Toggle(isOn: $showFavoritesOnly) {
-                    Text("Favorites Only")
-                }
                 ForEach(filteredLandmarks) { landmark in
                     NavigationLink {
                         LandmarkDetail(landmark: landmark)
@@ -38,7 +50,27 @@ struct LandmarkList: View {
                 }
             }
             .listStyle(.plain)
-            .navigationTitle("Landmarks")
+            .navigationTitle(title)
+            .frame(minWidth: 300)
+            .toolbar {
+                ToolbarItem {
+                    Menu {
+                        Picker("Category", selection: $filter) {
+                            ForEach(FilterCategory.allCases) { category in
+                                Text(category.rawValue).tag(category)
+                            }
+                        }
+                        .pickerStyle(.inline)
+
+                        Toggle(isOn: $showFavoritesOnly) {
+                            Text("Favorites Only")
+                        }
+                    } label: {
+                        Label("Filter", systemImage: "slider.horizontal.3")
+                    }
+                }
+            }
+        Text("Select a Landmark")
         }
     }
 }

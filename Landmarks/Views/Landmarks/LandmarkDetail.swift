@@ -15,6 +15,7 @@ struct LandmarkDetail: View {
     var landmarkIndex: Int {
         modelData.landmarks.firstIndex(where: { $0.id == landmark.id })!
     }
+    
     var body: some View {
         ScrollView {
             
@@ -36,7 +37,7 @@ struct LandmarkDetail: View {
                 }
                 
                 
-                HStack {
+                HStack(alignment: .bottom) {
                    
                     Text(landmark.park)
                    
@@ -52,6 +53,8 @@ struct LandmarkDetail: View {
                 
                 Text("About \(landmark.name)")
                     .font(.title2)
+                    .padding(.bottom, 5)
+                
                 Text(landmark.description)
             }
             .padding()
