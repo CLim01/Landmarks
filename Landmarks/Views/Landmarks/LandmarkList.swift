@@ -13,6 +13,7 @@ struct LandmarkList: View {
     // 상태 속성을 사용하여 보기 및 하위 보기에 대한 정보를 보관하기 때문에 항상 상태를 비공개로 만듭니다.
     @State private var showFavoritesOnly: Bool = false
     @State private var filter = FilterCategory.all
+    @State private var selectedLandmark: Landmark?
     
     var filteredLandmarks: [Landmark] {
         modelData.landmarks.filter { landmark in
@@ -34,12 +35,16 @@ struct LandmarkList: View {
         return showFavoritesOnly ? "Favorite \(title)" : title
     }
     
+    var index: Int? {
+        modelData.landmarks.firstIndex(where: { $0.id == selectedLandmark?.id })
+    }
+    
     var body: some View {
         NavigationView {
             // model data의 landmarks 배열을 List 초기화기에 전달합니다.
             // List는 식별 가능한 데이터(identifiable data)로 작동합니다.
             // 데이터와 함께 각 요소를 고유하게 식별하는 속성의 키 경로를 전달하거나 데이터 유형이 식별 가능 프로토콜에 적합하도록 하는 두 가지 방법 중 하나를 통해 데이터를 식별할 수 있습니다.
-            List {
+            List(selection: $selectedLandmark) {
                 ForEach(filteredLandmarks) { landmark in
                     NavigationLink {
                         LandmarkDetail(landmark: landmark)
@@ -47,6 +52,7 @@ struct LandmarkList: View {
                         // closure에서 LandmarkRow을 반환하여 동적으로 생성된 List를 완성합니다.
                         LandmarkRow(landmark: landmark)
                     }
+                    .tag(landmark)
                 }
             }
             .listStyle(.plain)
@@ -72,6 +78,7 @@ struct LandmarkList: View {
             }
         Text("Select a Landmark")
         }
+        .focusedValue(\.selectedLandmark, $modelData.landmarks[index ?? 0])
     }
 }
 

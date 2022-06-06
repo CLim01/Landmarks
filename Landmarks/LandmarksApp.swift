@@ -19,10 +19,27 @@ struct LandmarksApp: App {
             ContentView()
                 .environmentObject(modelData)
         }
+        .commands {
+            LandmarkCommands()
+        }
+        
+        #if !os(watchOS)
+        .commands {
+            LandmarkCommands()
+        }
+        #endif
+        
         
         // 이 Scene은 watchOS에만 해당되므로 조건부 컴파일을 추가합니다.
         #if os(watchOS)
         WKNotificationScene(controller: NotificationController.self, category: "LandmarkNear")
         #endif
+        
+        #if os(macOS)
+        Settings {
+            LandmarkSettings()
+        }
+        #endif
+        
     }
 }
